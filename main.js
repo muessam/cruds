@@ -34,7 +34,7 @@ creatBtn.onclick = function () {
         count : count.value,
         category : category.value,
     }
-        // console.log(newProduct.id);
+    // console.log(newProduct.id);
         
     // Counter
     if (newProduct.count > 1) {
@@ -93,7 +93,7 @@ function showAllProduct() {
                         <td>${allProduct[i].category}</td>
                         <td>${allProduct[i].totalPrice}</td>
                         <td>
-                            <button>update</button>
+                            <button onclick="updateProduct(${i})">update</button>
                         </td>
                         <td>
                             <button onclick="deleteItem(${i})" >delete</button>
@@ -104,7 +104,7 @@ function showAllProduct() {
     
     if (allProduct.length > 0) {
         deleteAll.innerHTML = `
-        <button onclick="deleteAllItem()" >delete</button>
+        <button onclick="deleteAllItem()" >delete ${allProduct.length}</button>
         `
     }
 }
@@ -112,7 +112,7 @@ function showAllProduct() {
 
 // Delete
 function deleteItem(i) {
-    allProduct.splice(i , 1 )
+    allProduct.splice(i , 1)
     localStorage.product = JSON.stringify(allProduct)
     // alert('hh')
     showResult.innerHTML = ''
@@ -120,11 +120,66 @@ function deleteItem(i) {
 }
 showAllProduct()
 
-// Delete All
-function deleteAllItem() {
-    console.log('hhh');
+// Update
+function updateProduct(i) {
+    let modal = document.getElementById("myModal");
+    let span = document.getElementsByClassName("close")[0];
+    let modalInputs = document.getElementById('modalInputs');
+    modal.style.display = "block";
+
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    window.onclick = function(event) {
+        if (event.target == modal) {
+        modal.style.display = "none";
+        }
+    }
+    for (let x = 0; x < allProduct.length; x++) {
+    //    console.log(x);
+       if (i == x) {
+        console.log(allProduct[i].title);
+        
+        modalInputs.innerHTML = `
+            <input type="text" placeholder="Title" id="title" value="${allProduct[i].title}">
+            <div class="price">
+                <input type="number" onkeyup="getTotal()" placeholder="Price" id="price" value="${allProduct[i].price}">
+                <input type="number" onkeyup="getTotal()" placeholder="Taxes" id="taxes" value="${allProduct[i].taxes}">
+                <input type="number" onkeyup="getTotal()" placeholder="Ads" id="ads"  value="${allProduct[i].ads}">
+                <input type="number" onkeyup="getTotal()" placeholder="Discount" id="discount" value="${allProduct[i].discount}">
+                <div class="total-price" id="totalPrice"  value="${allProduct[i].totalPrice}"></div>
+            </div>
+            <input type="text" placeholder="Category" id="category" value="${allProduct[i].category}">
+            <button onclick ="saveUpdate(i)" id="creatBtn">Save Update</button>
+        `
+  
+        }
+
+    }
+    // title.value = allProduct[i].title;
+    // price.value = allProduct[i].price;
+    // taxes.value = allProduct[i].taxes;
+    // ads.value = allProduct[i].ads;
+    // discount.value = allProduct[i].discount;
+    // totalPrice.innerHTML = allProduct[i].totalPrice.innerHTML;
+    // getTotal()
+    // category.value = allProduct[i].category;
+
+    // count.style.display = 'none'
+    // creatBtn.innerHTML = 'Update' 
+    // window.scrollTo({top: 0, behavior:"smooth"});
+}
+
+function saveUpdate(i) {
+    console.log(i);
     
+}
+
+
+// Delete All
+function deleteAllItem() {    
     localStorage.clear()
     allProduct.splice(0)
     showAllProduct()
 }
+
